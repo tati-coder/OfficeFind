@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OfficeFind - Find Your Perfect Office</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .card-hover:hover { transform: translateY(-2px); box-shadow: 0 12px 24px -8px rgba(0,0,0,0.15); }
+    .filter-checkbox:checked + span { color: #3b82f6; }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      height: 18px; width: 18px;
+      border-radius: 50%; background: #3b82f6;
+      cursor: pointer; margin-top: -6px;
+    }
+    input[type="range"]::-webkit-slider-runnable-track {
+      height: 6px; border-radius: 3px; background: #e5e7eb;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <header class="bg-white shadow-sm sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+          </svg>
+        </div>
+        <h1 class="text-2xl font-bold text-gray-900">OfficeFind</h1>
+      </div>
+      <p class="text-gray-500 text-sm hidden sm:block">Find your perfect workspace</p>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 py-8">
+    <div class="flex flex-col lg:flex-row gap-8">
+      <!-- Filters Sidebar -->
+      <aside class="lg:w-80 flex-shrink-0">
+        <div class="bg-white rounded-xl shadow-sm p-6 sticky top-24">
+          <h2 class="text-lg font-semibold text-gray-900 mb-6">Filters</h2>
+          
+          <!-- Budget -->
+          <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-700 mb-3">Monthly Budget</label>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-2xl font-bold text-blue-600" id="budgetValue">$2,500</span>
+              <span class="text-gray-500 text-sm">/month max</span>
+            </div>
+            <input type="range" id="budget" min="500" max="5000" step="100" value="2500" class="w-full">
+            <div class="flex justify-between text-xs text-gray-400 mt-1">
+              <span>$500</span>
+              <span>$5,000</span>
+            </div>
+          </div>
+
+          <!-- Area -->
+          <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-700 mb-3">Minimum Area</label>
+            <div class="flex items-center gap-2 mb-2">
+              <span class="text-2xl font-bold text-blue-600" id="areaValue">500</span>
+              <span class="text-gray-500 text-sm">sq ft min</span>
+            </div>
+            <input type="range" id="area" min="100" max="2000" step="50" value="500" class="w-full">
+            <div class="flex justify-between text-xs text-gray-400 mt-1">
+              <span>100 sq ft</span>
+              <span>2,000 sq ft</span>
+            </div>
+          </div>
+
+          <!-- Metro Proximity -->
+          <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-700 mb-3">Metro Proximity</label>
+            <select id="metro" class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none bg-white">
+              <option value="30">Any distance</option>
+              <option value="5">Within 5 min walk</option>
+              <option value="10">Within 10 min walk</option>
+              <option value="15">Within 15 min walk</option>
+              <option value="20">Within 20 min walk</option>
+            </select>
+          </div>
+
+          <!-- Utilities -->
+          <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-700 mb-3">Required Utilities</label>
+            <div class="space-y-3">
+              <label class="flex items-center gap-3 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500" data-utility="wifi">
+                <span class="text-gray-600 flex items-center gap-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/></svg>
+                  High-Speed WiFi
+                </span>
+              </label>
+              <label class="flex items-center gap-3 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500" data-utility="parking">
+                <span class="text-gray-600 flex items-center gap-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"/></svg>
+                  Parking
+                </span>
+              </label>
+              <label class="flex items-center gap-3 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500" data-utility="ac">
+                <span class="text-gray-600 flex items-center gap-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                  Air Conditioning
+                </span>
+              </label>
+              <label class="flex items-center gap-3 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500" data-utility="conference">
+                <span class="text-gray-600 flex items-center gap-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                  Conference Room
+                </span>
+              </label>
+              <label class="flex items-center gap-3 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500" data-utility="kitchen">
+                <span class="text-gray-600 flex items-center gap-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                  Kitchen
+                </span>
+              </label>
+              <label class="flex items-center gap-3 cursor-pointer">
+                <input type="checkbox" class="filter-checkbox w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500" data-utility="access">
+                <span class="text-gray-600 flex items-center gap-2">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                  24/7 Access
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <button id="resetFilters" class="w-full py-3 px-4 border border-gray-200 rounded-lg text-gray-600 font-medium hover:bg-gray-50 transition-colors">
+            Reset Filters
+          </button>
+        </div>
+      </aside>
+
+      <!-- Results -->
+      <section class="flex-1">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-xl font-semibold text-gray-900">Available Offices</h2>
+          <p class="text-gray-500 text-sm" id="resultsCount">Showing top 5 results sorted by price</p>
+        </div>
+
+        <div id="results" class="grid gap-6">
+          <!-- Cards will be injected here -->
+        </div>
+
+        <div id="noResults" class="hidden text-center py-16">
+          <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </div>
+          <h3 class="text-lg font-medium text-gray-900 mb-2">No offices found</h3>
+          <p class="text-gray-500">Try adjusting your filters to see more results</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const offices = [
+      { id: 1, name: "Downtown Loft Office", address: "123 Main St, Downtown", price: 600, area: 150, metro: 3, utilities: ["wifi", "ac", "access"] },
+      { id: 2, name: "Tech Hub Studio", address: "456 Innovation Blvd", price: 850, area: 200, metro: 8, utilities: ["wifi", "ac", "conference", "kitchen"] },
+      { id: 3, name: "Business Center Plus", address: "789 Commerce Ave", price: 950, area: 250, metro: 5, utilities: ["wifi", "parking", "ac", "conference", "access"] },
+      { id: 4, name: "Creative Space", address: "321 Art District", price: 1100, area: 350, metro: 12, utilities: ["wifi", "ac", "kitchen", "access"] },
+      { id: 5, name: "Executive Suite", address: "555 Corporate Plaza", price: 1400, area: 400, metro: 7, utilities: ["wifi", "parking", "ac", "conference", "kitchen", "access"] },
+      { id: 6, name: "Startup Garage", address: "88 Entrepreneur Lane", price: 750, area: 180, metro: 15, utilities: ["wifi", "ac"] },
+      { id: 7, name: "Professional Center", address: "100 Business Park", price: 1250, area: 320, metro: 10, utilities: ["wifi", "parking", "ac", "conference", "access"] },
+      { id: 8, name: "Urban Workspace", address: "250 City Center", price: 1800, area: 500, metro: 4, utilities: ["wifi", "parking", "ac", "conference", "kitchen", "access"] },
+      { id: 9, name: "Co-Work Hub", address: "77 Shared Space Rd", price: 450, area: 100, metro: 6, utilities: ["wifi", "ac", "access"] },
+      { id: 10, name: "Enterprise Tower", address: "999 Corporate Dr", price: 3500, area: 1200, metro: 2, utilities: ["wifi", "parking", "ac", "conference", "kitchen", "access"] },
+      { id: 11, name: "Midtown Office", address: "450 Midtown Ave", price: 1650, area: 450, metro: 9, utilities: ["wifi", "parking", "ac", "conference", "kitchen"] },
+      { id: 12, name: "Sunrise Business Park", address: "720 East Side Blvd", price: 2200, area: 600, metro: 18, utilities: ["wifi", "parking", "ac", "conference", "kitchen", "access"] },
+      { id: 13, name: "Elite Workspace", address: "333 Premium Way", price: 4500, area: 2000, metro: 5, utilities: ["wifi", "parking", "ac", "conference", "kitchen", "access"] },
+      { id: 14, name: "Budget Office", address: "55 Economy St", price: 550, area: 120, metro: 20, utilities: ["wifi", "access"] },
+      { id: 15, name: "Garden View Office", address: "88 Green Park Rd", price: 1300, area: 280, metro: 11, utilities: ["wifi", "parking", "ac", "kitchen"] }
+    ];
+
+    const utilityLabels = {
+      wifi: "WiFi",
+      parking: "Parking",
+      ac: "AC",
+      conference: "Conference",
+      kitchen: "Kitchen",
+      access: "24/7"
+    };
+
+    const utilityIcons = {
+      wifi: '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/></svg>',
+      parking: '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"/></svg>',
+      ac: '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>',
+      conference: '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>',
+      kitchen: '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>',
+      access: '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>'
+    };
+
+    function formatPrice(price) {
+      return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(price);
+    }
+
+    function getMetroLabel(minutes) {
+      if (minutes <= 5) return `${minutes} min walk`;
+      if (minutes <= 10) return `${minutes} min walk`;
+      return `${minutes} min walk`;
+    }
+
+    function filterOffices() {
+      const maxBudget = parseInt(document.getElementById('budget').value);
+      const minArea = parseInt(document.getElementById('area').value);
+      const maxMetro = parseInt(document.getElementById('metro').value);
+      const selectedUtilities = Array.from(document.querySelectorAll('.filter-checkbox:checked')).map(cb => cb.dataset.utility);
+
+      return offices
+        .filter(office => office.price <= maxBudget)
+        .filter(office => office.area >= minArea)
+        .filter(office => office.metro <= maxMetro)
+        .filter(office => {
+          if (selectedUtilities.length === 0) return true;
+          return selectedUtilities.every(util => office.utilities.includes(util));
+        })
+        .sort((a, b) => a.price - b.price)
+        .slice(0, 5);
+    }
+
+    function renderCards(offices) {
+      const resultsDiv = document.getElementById('results');
+      const noResultsDiv = document.getElementById('noResults');
+      
+      if (offices.length === 0) {
+        resultsDiv.innerHTML = '';
+        noResultsDiv.classList.remove('hidden');
+        return;
+      }
+
+      noResultsDiv.classList.add('hidden');
+      
+      resultsDiv.innerHTML = offices.map((office, index) => `
+        <div class="bg-white rounded-xl shadow-sm p-6 card-hover transition-all duration-300 border border-gray-100 ${index === 0 ? 'ring-2 ring-blue-500 ring-offset-2' : ''}">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+            <div>
+              <h3 class="text-lg font-semibold text-gray-900">${office.name}</h3>
+              <p class="text-gray-500 text-sm flex items-center gap-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                ${office.address}
+              </p>
+            </div>
+            <div class="text-right">
+              <p class="text-2xl font-bold text-blue-600">${formatPrice(office.price)}</p>
+              <p class="text-gray-500 text-sm">/month</p>
+            </div>
+          </div>
+          
+          <div class="flex flex-wrap items-center gap-4 mb-4 text-sm">
+            <div class="flex items-center gap-1.5 text-gray-600 bg-gray-50 px-3 py-1.5 rounded-lg">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+              ${office.area} sq ft
+            </div>
+            <div class="flex items-center gap-1.5 text-gray-600 bg-gray-50 px-3 py-1.5 rounded-lg">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+              ${getMetroLabel(office.metro)}
+            </div>
+          </div>
+          
+          <div class="flex flex-wrap gap-2">
+            ${office.utilities.map(util => `
+              <span class="inline-flex items-center gap-1 px-2.5 py-1 bg-blue-50 text-blue-700 text-xs font-medium rounded-full">
+                ${utilityIcons[util]}
+                ${utilityLabels[util]}
+              </span>
+            `).join('')}
+          </div>
+          
+          ${index === 0 ? '<p class="mt-4 text-xs font-medium text-blue-600 bg-blue-50 inline-block px-2 py-1 rounded">Best Price</p>' : ''}
+        </div>
+      `).join('');
+    }
+
+    function updateDisplay() {
+      const filtered = filterOffices();
+      renderCards(filtered);
+    }
+
+    document.getElementById('budget').addEventListener('input', (e) => {
+      document.getElementById('budgetValue').textContent = formatPrice(e.target.value);
+      updateDisplay();
+    });
+
+    document.getElementById('area').addEventListener('input', (e) => {
+      document.getElementById('areaValue').textContent = e.target.value;
+      updateDisplay();
+    });
+
+    document.getElementById('metro').addEventListener('change', updateDisplay);
+
+    document.querySelectorAll('.filter-checkbox').forEach(cb => {
+      cb.addEventListener('change', updateDisplay);
+    });
+
+    document.getElementById('resetFilters').addEventListener('click', () => {
+      document.getElementById('budget').value = 2500;
+      document.getElementById('budgetValue').textContent = formatPrice(2500);
+      document.getElementById('area').value = 500;
+      document.getElementById('areaValue').textContent = '500';
+      document.getElementById('metro').value = 30;
+      document.querySelectorAll('.filter-checkbox').forEach(cb => cb.checked = false);
+      updateDisplay();
+    });
+
+    updateDisplay();
+  </script>
+</body>
+</html>
